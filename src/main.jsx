@@ -3,8 +3,27 @@ import { createRoot } from 'react-dom/client'
 
 
 function App(){
-  return <h1>Manage Employees</h1>
+
+  let count = 0;
+
+  function handleIncrement(){
+    console.log("handleIncrement FIRED");
+    count += 1;
+    console.log("Count:", count);
+  }
+
+  return (
+    <div>
+      <h2>Count: {count}</h2>
+      <div>
+        <button onClick={handleIncrement}>Increment</button>
+        <button onClick={handleIncrement}>Decrement</button>
+      </div>
+    </div>
+  )
 }
+
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
