@@ -1,25 +1,31 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-
+import './index.css'
 
 function App(){
+      return(
+         <div className='container'>
+        <div className="table-wrapper">
+          <Header/>
+          </div>
+          </div>
+      )
+  
+}
 
-  let count = 0;
-
-  function handleIncrement(){
-    console.log("handleIncrement FIRED");
-    count += 1;
-    console.log("Count:", count);
-  }
-
-  return (
-    <div>
-      <h2>Count: {count}</h2>
-      <div>
-        <button onClick={handleIncrement}>Increment</button>
-        <button onClick={handleIncrement}>Decrement</button>
-      </div>
-    </div>
+function Header(){
+  return(
+      <div className="table-title">
+                <div className="row">
+                    <div className="col-sm-6">
+						<h2>Manage <b>Employees</b></h2>
+					</div>
+					<div className="col-sm-6">
+						<a href="#addEmployeeModal" className="btn btn-success" data-toggle="modal"><i className="material-icons">&#xE147;</i> <span>Add New Employee</span></a>
+						<a href="#deleteEmployeeModal" className="btn btn-danger" data-toggle="modal"><i className="material-icons">&#xE15C;</i> <span>Delete</span></a>
+					</div>
+                </div>
+            </div>
   )
 }
 
