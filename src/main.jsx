@@ -15,6 +15,15 @@ function App(){
     }
   ]);
 
+  function addEmployee(newEmployee){
+     setEmployees(prevEmployees => [...prevEmployees,
+      {
+        ...newEmployee,
+        id: Math.max(...prevEmployees.map(emp => emp.id), 0) + 1
+      }
+     ])
+  }
+
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   function openAddModal(){
@@ -25,13 +34,14 @@ function App(){
   function onCloseAddModal(){
     console.log("kapatsak mi ustu");
     setIsAddModalOpen(false);
+
   }
       return(
          <div className='container'>
         <div className="table-wrapper">
           <Header onOpenAddModal={openAddModal} />
           <EmployeeList employees={employees}/>
-          <AddEmployeeModal isOpen={isAddModalOpen} onCloseAddModal={onCloseAddModal}/>
+          <AddEmployeeModal isOpen={isAddModalOpen} onCloseAddModal={() => setIsAddModalOpen(false)} onAddEmployee={addEmployee}/>
           </div>
           </div>
       )
@@ -55,7 +65,36 @@ function Header({onOpenAddModal}){
   )
 }
 
-function AddEmployeeModal({isOpen, onCloseAddModal}){
+function AddEmployeeModal({isOpen, onCloseAddModal, onAddEmployee}){
+
+  const [formData, setFormData] = useState({
+    name: '', 
+    email: '',
+    address: '',
+    phone: ''
+  })
+
+  function handleChange(e){
+    const {name, value} = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }))
+  }
+
+  function handleSubmit(e){
+    e.preventDefault();
+    console.log("bu da halloldu");
+    onAddEmployee(formData);
+    onCloseAddModal();
+    setFormData({
+      name: '',
+      email: '',
+      address: '',
+      phone: ''
+    });
+  }
+
   if(!isOpen)return null;
   return (
     <>
@@ -63,13 +102,59 @@ function AddEmployeeModal({isOpen, onCloseAddModal}){
 	<div id="AddEmployeeModal" className="modal fade show">
   <div className="modal-dialog">
   <div className="modal-content">
-        <form>
+        <form onSubmit={handleSubmit}>
     <div className="modal-header">						
 						<h4 className="modal-title">Add Employee</h4>
 						<button onClick={onCloseAddModal} type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 {/* React sentetik eventi, html DOM hemen hemen aynısı 
 ama sentetik olması tüm tarayıcılar için aynı çalışmasını sağlıyor.*/}					
           </div>
+          <div className="modal-body">					
+						<div className="form-group">
+							<label>Name</label>
+							<input type="text" 
+              className="form-control" 
+              required
+              name='name'
+              value={formData.name}
+              onChange={handleChange}
+              />
+						</div>
+						<div className="form-group">
+							<label>Email</label>
+							<input type="email" 
+              className="form-control" 
+              required
+              name='email'
+              value={formData.email}
+              onChange={handleChange}
+              />
+						</div>
+						<div className="form-group">
+							<label>Address</label>
+							<textarea 
+              className="form-control" 
+              required
+              name='address'
+              value={formData.address}
+              onChange={handleChange}
+              ></textarea>
+						</div>
+						<div className="form-group">
+							<label>Phone</label>
+							<input type="text" 
+              className="form-control" 
+              required
+              name='phone'
+              value={formData.phone}
+              onChange={handleChange}
+              />
+						</div>					
+					</div>
+          <div className="modal-footer">
+						<button type="button" className="btn btn-default">Cancel</button>
+						<button type="submit" className="btn btn-success">Add</button>
+					</div>
         </form>
   </div>
   </div>
