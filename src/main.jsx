@@ -1,5 +1,6 @@
 import { StrictMode, useState } from 'react'
 import { createRoot } from 'react-dom/client'
+
 import './index.css'
 
 function App(){
@@ -14,16 +15,23 @@ function App(){
     }
   ]);
 
-const [title, setTitle] = useState("Default Title");
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-function updateTitle(){
-  setTitle("New Title");
-}
+  function openAddModal(){
+    console.log("yaptık");
+    setIsAddModalOpen(true);
+  }
+
+  function onCloseAddModal(){
+    console.log("kapatsak mi ustu");
+    setIsAddModalOpen(false);
+  }
       return(
          <div className='container'>
         <div className="table-wrapper">
-          <Header title={title}  onUpdateTitle={updateTitle}/>
+          <Header onOpenAddModal={openAddModal} />
           <EmployeeList employees={employees}/>
+          <AddEmployeeModal isOpen={isAddModalOpen} onCloseAddModal={onCloseAddModal}/>
           </div>
           </div>
       )
@@ -31,20 +39,42 @@ function updateTitle(){
 }
 
 
-function Header( {title, onUpdateTitle} ){
+function Header({onOpenAddModal}){
   return(
       <div className="table-title">
                 <div className="row">
                     <div className="col-sm-6">
-						<h2>{title}</h2>
+						<h2>Manage <b>Employees</b></h2>
 					</div>
 					<div className="col-sm-6">
-            <button onClick={onUpdateTitle}className="btn btn-success">Click Me</button>
-{/*					<a href="#addEmployeeModal" className="btn btn-success" data-toggle="modal"><i className="material-icons">&#xE147;</i> <span>Add New Employee</span></a>
-						<a href="#deleteEmployeeModal" className="btn btn-danger" data-toggle="modal"><i className="material-icons">&#xE15C;</i> <span>Delete</span></a> */}
+      <button  onClick={onOpenAddModal} className="btn btn-success"><i className="material-icons">&#xE147;</i> <span>Add New Employee</span></button>
+				<a href="#deleteEmployeeModal" className="btn btn-danger" data-toggle="modal"><i className="material-icons">&#xE15C;</i> <span>Delete</span></a>
 					</div>
                 </div>
             </div>
+  )
+}
+
+function AddEmployeeModal({isOpen, onCloseAddModal}){
+  if(!isOpen)return null;
+  return (
+    <>
+
+	<div id="AddEmployeeModal" className="modal fade show">
+  <div className="modal-dialog">
+  <div className="modal-content">
+        <form>
+    <div className="modal-header">						
+						<h4 className="modal-title">Add Employee</h4>
+						<button onClick={onCloseAddModal} type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+        </form>
+  </div>
+  </div>
+  </div>
+  <div className="modal-backgrop fade show"></div>
+
+  </>
   )
 }
 
