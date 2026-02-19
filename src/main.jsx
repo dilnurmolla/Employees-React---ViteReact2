@@ -67,7 +67,9 @@ function AddEmployeeModal({isOpen, onCloseAddModal}){
     <div className="modal-header">						
 						<h4 className="modal-title">Add Employee</h4>
 						<button onClick={onCloseAddModal} type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					</div>
+{/* React sentetik eventi, html DOM hemen hemen aynısı 
+ama sentetik olması tüm tarayıcılar için aynı çalışmasını sağlıyor.*/}					
+          </div>
         </form>
   </div>
   </div>
