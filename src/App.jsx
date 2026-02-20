@@ -14,12 +14,20 @@ function App(){
       email: "thomashardy@gmail.com",
       address: "89 Chiaroscuro Rd, Portland, USA",
       phone: "(171) 555-2222"
+    },
+     {
+      id: 2,
+      name: "Dilnur Molla",
+      email: "dilnurmolla00@gmail.com",
+      address: "Edirne/Merkez",
+      phone: "(871) 555-3322"
     }
   ]);
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [selectedEmployees, setSelectedEmployees] = useState([]);
 
   function addEmployee(newEmployee){
      setEmployees(prevEmployees => [...prevEmployees,
@@ -45,6 +53,17 @@ function App(){
      setSelectedEmployee(employee);
   }
 
+  function deleteClick(employee){
+    console.log("delete", employee);
+    const confirmed = window.confirm("Are you sure you want to delete this employee?");
+
+    if(confirmed){
+      setEmployees(prevEmployees => 
+        prevEmployees.filter(emp => emp.id !== employee.id)
+      );
+        setSelectedEmployees([]);
+    }
+  }
 
   function openAddModal(){
     console.log("yaptık");
@@ -62,11 +81,30 @@ function App(){
     setSelectedEmployee(null);
   }
 
+  function deleteSelectedEmployees(){
+        const confirmed = window.confirm("Are you sure you want to delete the employees?");
+
+        if(confirmed){
+          setEmployees(prevEmployees => 
+            prevEmployees.filter(emp => !selectedEmployees.includes(emp.id))
+          );
+          setSelectedEmployees([]);
+        }
+  }
+
       return(
          <div className='container'>
         <div className="table-wrapper">
-          <Header onOpenAddModal={openAddModal} />
-          <EmployeeList employees={employees} onEditClick={editClick}/>
+          <Header 
+          onOpenAddModal={openAddModal} 
+          onDeleteSelected={deleteSelectedEmployees}/>
+          <EmployeeList 
+          employees={employees} 
+          onEditClick={editClick}
+          onDeleteClick={deleteClick}
+          selectedEmployees={selectedEmployees}
+          setSelectedEmployees={setSelectedEmployees}
+          />
           <AddEmployeeModal isOpen={isAddModalOpen} onCloseAddModal={() => setIsAddModalOpen(false)} onAddEmployee={addEmployee}/>
           <EditModalEmployee isOpen={isEditModalOpen} 
           employee={selectedEmployee}
