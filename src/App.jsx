@@ -30,6 +30,16 @@ function App(){
      ])
   }
 
+  function editEmployee(updatedEmployee){
+    console.log("updatedEmployee", updatedEmployee);
+
+    setEmployees(prevEmployees => { 
+    return prevEmployees.map(emp => {
+        return emp.id === updatedEmployee.id ? updatedEmployee : emp
+      }) 
+    });
+  }
+
   function editClick(employee){
      setIsEditModalOpen(true);
      setSelectedEmployee(employee);
@@ -46,6 +56,12 @@ function App(){
     setIsAddModalOpen(false);
 
   }
+
+  function CloseEditModal(){
+    setIsEditModalOpen(false);
+    setSelectedEmployee(null);
+  }
+
       return(
          <div className='container'>
         <div className="table-wrapper">
@@ -54,10 +70,8 @@ function App(){
           <AddEmployeeModal isOpen={isAddModalOpen} onCloseAddModal={() => setIsAddModalOpen(false)} onAddEmployee={addEmployee}/>
           <EditModalEmployee isOpen={isEditModalOpen} 
           employee={selectedEmployee}
-          onCloseEditModal ={ () => {
-            setIsEditModalOpen(false);
-            setSelectedEmployee(null);
-          }} />
+          onCloseEditModal={CloseEditModal} 
+          onEditEmployee={editEmployee}/>
         </div>
       </div>
   )

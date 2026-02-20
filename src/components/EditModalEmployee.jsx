@@ -1,4 +1,60 @@
-function EditModalEmployee({isOpen, employee, onCloseEditModal}){
+import { useState, useEffect } from "react";
+
+function EditModalEmployee({isOpen, employee, onCloseEditModal, onEditEmployee}){
+
+    console.log("employee", employee);
+
+  const [formData, setFormData] = useState({
+    name: '', 
+    email: '',
+    address: '',
+    phone: '',
+    gender: '',
+    department: ''
+  })
+
+    console.log("formdata", formData);
+
+    useEffect(() => {
+        if(employee){
+            setFormData(employee);
+        }
+    }, [employee]);
+
+    function handleChange(e){
+    const {name, value} = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }))
+  }
+
+  function handleSubmit(e){
+    e.preventDefault();
+    console.log("bu da halloldu");
+    onEditEmployee(formData);
+    onCloseEditModal();
+    setFormData({
+      name: '',
+      email: '',
+      address: '',
+      phone: '',
+      gender: '',
+      department: ''
+    })
+  }
+
+  function handleCancel(){
+    onCloseEditModal();
+    setFormData({
+      name: '',
+      email: '',
+      address: '',
+      phone: '',
+      gender: '',
+      department: ''
+    })
+  }
 
   if(!isOpen)return null;
   return (
@@ -9,8 +65,8 @@ function EditModalEmployee({isOpen, employee, onCloseEditModal}){
   <div className="modal-content">
         <form onSubmit={handleSubmit}>
     <div className="modal-header">						
-                        <h4 className="modal-title">Add Employee</h4>
-                        <button onClick={onCloseAddModal} type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 className="modal-title">Edit Employee</h4>
+                        <button onClick={onCloseEditModal} type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 {/* React sentetik eventi, html DOM hemen hemen aynısı 
 ama sentetik olması tüm tarayıcılar için aynı çalışmasını sağlıyor.*/}					
           </div>
@@ -99,7 +155,7 @@ ama sentetik olması tüm tarayıcılar için aynı çalışmasını sağlıyor.
         </div>
           <div className="modal-footer">
                         <button onClick={handleCancel} type="button" className="btn btn-default">Cancel</button>
-                        <button type="submit" className="btn btn-success">Add</button>
+                        <button type="submit" className="btn btn-success">Update</button>
                     </div>
         </form>
   </div>
