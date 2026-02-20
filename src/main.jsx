@@ -71,7 +71,9 @@ function AddEmployeeModal({isOpen, onCloseAddModal, onAddEmployee}){
     name: '', 
     email: '',
     address: '',
-    phone: ''
+    phone: '',
+    gender: '',
+    department: ''
   })
 
   function handleChange(e){
@@ -91,8 +93,22 @@ function AddEmployeeModal({isOpen, onCloseAddModal, onAddEmployee}){
       name: '',
       email: '',
       address: '',
-      phone: ''
-    });
+      phone: '',
+      gender: '',
+      department: ''
+    })
+  }
+
+  function handleCancel(){
+    onCloseAddModal();
+    setFormData({
+      name: '',
+      email: '',
+      address: '',
+      phone: '',
+      gender: '',
+      department: ''
+    })
   }
 
   if(!isOpen)return null;
@@ -149,10 +165,51 @@ ama sentetik olması tüm tarayıcılar için aynı çalışmasını sağlıyor.
               value={formData.phone}
               onChange={handleChange}
               />
-						</div>					
-					</div>
+						</div>	
+           <div className="form-group">
+  <label>Gender</label>
+  <div>
+    <label style={{ marginRight: 12 }}>
+      <input
+        type="radio"
+        name="gender"
+        value="Male"
+        checked={formData.gender === "Male"}
+        onChange={handleChange}
+      />{" "}
+      Male
+    </label>
+
+    <label>
+      <input
+        type="radio"
+        name="gender"
+        value="Female"
+        checked={formData.gender === "Female"}
+        onChange={handleChange}
+      />{" "}
+      Female
+    </label>
+  </div>
+</div>
+<div className='form-group'>
+  <label>Department</label>
+ <div>
+   <select
+     name = "department"
+     value={formData.department}
+     onChange={handleChange}>
+
+    <option value="" disabled>Select Department</option>
+    <option value="Finance">Finance</option>
+    <option value="HR">HR</option>
+    <option value="Development">Development</option>
+  </select>
+ </div>
+</div>
+        </div>
           <div className="modal-footer">
-						<button type="button" className="btn btn-default">Cancel</button>
+						<button onClick={handleCancel} type="button" className="btn btn-default">Cancel</button>
 						<button type="submit" className="btn btn-success">Add</button>
 					</div>
         </form>
@@ -181,6 +238,8 @@ function EmployeeList({ employees }){
                         <th>Email</th>
 						            <th>Address</th>
                         <th>Phone</th>
+                        <th>Gender</th>
+                        <th>Department</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -206,8 +265,10 @@ function EmployeeItem({employee}){
 						</td>
                         <td>{employee.name}</td>
                         <td>{employee.email}</td>
-						<td>{employee.address}</td>
+						            <td>{employee.address}</td>
                         <td>{employee.phone}</td>
+                        <td>{employee.gender}</td>
+                        <td>{employee.department}</td>
                         <td>
                             <a href="#editEmployeeModal" className="edit" data-toggle="modal"><i className="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                             <a href="#deleteEmployeeModal" className="delete" data-toggle="modal"><i className="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
