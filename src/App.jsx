@@ -1,4 +1,4 @@
-import { useState } from "react"; 
+import { useEffect, useState } from "react"; 
 
 import Header from "./components/Header";
 import AddEmployeeModal from "./components/AddEmployeeModal";
@@ -7,27 +7,28 @@ import EmployeeList from "./components/EmployeeList";
 
 function App(){
 
-  const [employees, setEmployees] = useState([
-    {
-      id: 1,
-      name: "Thomas Hardy",
-      email: "thomashardy@gmail.com",
-      address: "89 Chiaroscuro Rd, Portland, USA",
-      phone: "(171) 555-2222"
-    },
-     {
-      id: 2,
-      name: "Dilnur Molla",
-      email: "dilnurmolla00@gmail.com",
-      address: "Edirne/Merkez",
-      phone: "(871) 555-3322"
-    }
-  ]);
+  const [employees, setEmployees] = useState(() => {
+    const savedEmployees = localStorage.getItem("employees");
+    console.log("savedEmployees", savedEmployees);
+    return savedEmployees ? JSON.parse(savedEmployees) : [];
+  });
+
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [selectedEmployees, setSelectedEmployees] = useState([]);
+
+  useEffect(() => {
+    localStorage.setItem("employees", JSON.stringify(employees));
+  }, [employees]);
+
+  //useEffect(() => {
+    //localStorage.setItem("username", "John Doe");
+//const username = localStorage.getItem("username");
+//console.log("username: ", username);
+//localStorage.removeItem("username");
+//}, [])
 
   function addEmployee(newEmployee){
      setEmployees(prevEmployees => [...prevEmployees,
