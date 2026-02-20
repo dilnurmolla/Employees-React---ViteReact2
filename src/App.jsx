@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import Header from "./components/Header";
 import AddEmployeeModal from "./components/AddEmployeeModal";
+import EditModalEmployee from "./components/EditModalEmployee";
 import EmployeeList from "./components/EmployeeList";
 
 function App(){
@@ -16,6 +17,10 @@ function App(){
     }
   ]);
 
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+
   function addEmployee(newEmployee){
      setEmployees(prevEmployees => [...prevEmployees,
       {
@@ -25,7 +30,11 @@ function App(){
      ])
   }
 
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  function editClick(employee){
+     setIsEditModalOpen(true);
+     setSelectedEmployee(employee);
+  }
+
 
   function openAddModal(){
     console.log("yaptık");
@@ -41,12 +50,18 @@ function App(){
          <div className='container'>
         <div className="table-wrapper">
           <Header onOpenAddModal={openAddModal} />
-          <EmployeeList employees={employees}/>
+          <EmployeeList employees={employees} onEditClick={editClick}/>
           <AddEmployeeModal isOpen={isAddModalOpen} onCloseAddModal={() => setIsAddModalOpen(false)} onAddEmployee={addEmployee}/>
-          </div>
-          </div>
-      )
-  
+          <EditModalEmployee isOpen={isEditModalOpen} 
+          employee={selectedEmployee}
+          onCloseEditModal ={ () => {
+            setIsEditModalOpen(false);
+            setSelectedEmployee(null);
+          }} />
+        </div>
+      </div>
+  )
+
 }
 
 
